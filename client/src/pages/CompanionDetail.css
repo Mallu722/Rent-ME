@@ -1,0 +1,157 @@
+.companion-detail-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.companion-header {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.companion-photo {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.companion-info h1 {
+  font-size: 36px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.rating-large {
+  font-size: 20px;
+  color: #FF9500;
+  margin-bottom: 15px;
+}
+
+.location {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.price-large {
+  font-size: 32px;
+  font-weight: bold;
+  color: #007AFF;
+  margin-bottom: 30px;
+}
+
+.book-button {
+  display: inline-block;
+  background: #007AFF;
+  color: white;
+  padding: 15px 40px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.book-button:hover {
+  background: #0056b3;
+}
+
+.companion-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.section h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.section p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #666;
+}
+
+.activities-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.activity-badge {
+  background: #E3F2FD;
+  color: #007AFF;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.review-item {
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.reviewer-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.review-rating {
+  color: #FF9500;
+  font-weight: 500;
+}
+
+.review-comment {
+  color: #666;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.review-date {
+  font-size: 14px;
+  color: #999;
+}
+
+.no-reviews {
+  color: #999;
+  font-style: italic;
+}
+
+@media (max-width: 968px) {
+  .companion-header {
+    grid-template-columns: 1fr;
+  }
+
+  .companion-photo {
+    height: 300px;
+  }
+}
