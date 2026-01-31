@@ -1,4 +1,4 @@
-# Rent Me - Full-Stack Companion Booking Application
+# Saathi - Full-Stack Companion Booking Application
 
 A comprehensive full-stack mobile application built with React Native (TypeScript) and Node.js/Express backend, enabling users to find, book, and interact with verified companions for various activities.
 
@@ -57,7 +57,7 @@ npm install
 ```env
 PORT=5000
 NODE_ENV=development
-MONGODB_URI=mongodb://localhost:27017/rentme
+MONGODB_URI=mongodb://localhost:27017/saathi
 JWT_SECRET=your_jwt_secret_key_here
 JWT_EXPIRES_IN=7d
 STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
@@ -296,7 +296,7 @@ This project is licensed under the MIT License.
 
 ## 📞 Support
 
-For support, email support@rentme.com or create an issue in the repository.
+For support, email support@saathi.com or create an issue in the repository.
 
 ---
 

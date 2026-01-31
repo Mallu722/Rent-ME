@@ -1,6 +1,6 @@
 import express from 'express';
-import Companion from '../models/Companion.model';
-import User from '../models/User.model';
+import Companion from '../../../database/models/Companion.model';
+import User from '../../../database/models/User.model';
 import { authenticate, AuthRequest } from '../middleware/auth.middleware';
 import { authorize } from '../middleware/auth.middleware';
 
@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
 
     // Filter by city
     if (city) {
-      const users = await User.find({ 'location.city': new RegExp(city, 'i') }).select('_id');
+      const users = await User.find({ 'location.city': new RegExp(city as string, 'i') }).select('_id');
       query.userId = { $in: users.map((u) => u._id) };
     }
 

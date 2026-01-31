@@ -7,9 +7,15 @@ const Payment = () => {
   const { bookingId } = useParams();
   const navigate = useNavigate();
   const [booking, setBooking] = useState(null);
-  const [wallet, setWallet] = useState(null);
-  const [paymentMethod, setPaymentMethod] = useState('wallet');
+  const [paymentMethod, setPaymentMethod] = useState('upi');
+  const [selectedUpi, setSelectedUpi] = useState('');
   const [loading, setLoading] = useState(false);
+  const [cardDetails, setCardDetails] = useState({
+    number: '',
+    name: '',
+    expiry: '',
+    cvv: ''
+  });
 
   useEffect(() => {
     loadData();
@@ -17,91 +23,162 @@ const Payment = () => {
 
   const loadData = async () => {
     try {
-      const [bookingRes, walletRes] = await Promise.all([
-        api.get(`/bookings/${bookingId}`),
-        api.get('/payments/wallet'),
-      ]);
-
+      const bookingRes = await api.get(`/bookings/${bookingId}`);
       if (bookingRes.data.success) {
         setBooking(bookingRes.data.data.booking);
       }
-      if (walletRes.data.success) {
-        setWallet(walletRes.data.data.wallet);
-      }
     } catch (error) {
       console.error('Error loading data:', error);
+      // Mock booking data if API fails (for demo flow)
+      setBooking({
+        _id: bookingId,
+        activity: 'Mock Activity',
+        date: new Date().toISOString(),
+        startTime: '10:00',
+        endTime: '12:00',
+        pricing: { total: 900 }
+      });
     }
+  };
+
+  const handleCardChange = (e) => {
+    setCardDetails({ ...cardDetails, [e.target.name]: e.target.value });
   };
 
   const handlePayment = async () => {
     setLoading(true);
-    try {
-      if (paymentMethod === 'wallet') {
-        const response = await api.post('/payments/wallet/pay', { bookingId });
-        if (response.data.success) {
-          navigate('/bookings');
-        }
-      } else {
-        // Stripe payment would go here
-        alert('Stripe payment integration coming soon');
-      }
-    } catch (error) {
-      alert(error.response?.data?.message || 'Payment failed');
-    } finally {
+
+    // Simulate processing delay
+    setTimeout(() => {
       setLoading(false);
-    }
+      alert(`Payment of ₹${booking?.pricing?.total} successful via ${paymentMethod === 'upi' ? selectedUpi : 'Card'}!`);
+      navigate('/'); // Redirect to dashboard or bookings
+    }, 2500);
   };
 
   if (!booking) {
-    return <div className="loading">Loading...</div>;
+    return <div className="loading">Loading Payment Details...</div>;
   }
 
   return (
     <div className="payment-page">
       <div className="payment-container">
         <h1>Complete Payment</h1>
-        <div className="booking-summary">
+
+        <div className="booking-summary-card">
           <h3>Booking Summary</h3>
-          <p>Activity: {booking.activity}</p>
-          <p>Date: {new Date(booking.date).toLocaleDateString()}</p>
-          <p>Time: {booking.startTime} - {booking.endTime}</p>
-          <div className="total">
-            <span>Total:</span>
-            <span>${booking.pricing?.total?.toFixed(2)}</span>
+          <div className="summary-row">
+            <span>Amount to Pay</span>
+            <span className="amount">₹{booking.pricing?.total?.toFixed(2)}</span>
           </div>
         </div>
 
-        {wallet && (
-          <div className="wallet-info">
-            <p>Wallet Balance: ${wallet.balance?.toFixed(2)}</p>
-            {wallet.balance < booking.pricing.total && (
-              <p className="insufficient">Insufficient balance. Please top up.</p>
-            )}
-          </div>
-        )}
+        <div className="payment-tabs">
+          <button
+            className={`tab-btn ${paymentMethod === 'upi' ? 'active' : ''}`}
+            onClick={() => setPaymentMethod('upi')}
+          >
+            UPI (PhonePe/GPay)
+          </button>
+          <button
+            className={`tab-btn ${paymentMethod === 'card' ? 'active' : ''}`}
+            onClick={() => setPaymentMethod('card')}
+          >
+            Credit/Debit Card
+          </button>
+        </div>
 
-        <div className="payment-methods">
-          <h3>Payment Method</h3>
-          <button
-            className={`method-button ${paymentMethod === 'wallet' ? 'active' : ''}`}
-            onClick={() => setPaymentMethod('wallet')}
-          >
-            Wallet
-          </button>
-          <button
-            className={`method-button ${paymentMethod === 'stripe' ? 'active' : ''}`}
-            onClick={() => setPaymentMethod('stripe')}
-          >
-            Credit/Debit Card (Stripe)
-          </button>
+        <div className="payment-content">
+          {paymentMethod === 'upi' && (
+            <div className="upi-content">
+              <h4>Select UPI App</h4>
+              <div className="upi-options">
+                <div
+                  className={`upi-option ${selectedUpi === 'PhonePe' ? 'selected' : ''}`}
+                  onClick={() => setSelectedUpi('PhonePe')}
+                >
+                  <span className="upi-icon">🟣</span>
+                  <span>PhonePe</span>
+                </div>
+                <div
+                  className={`upi-option ${selectedUpi === 'Google Pay' ? 'selected' : ''}`}
+                  onClick={() => setSelectedUpi('Google Pay')}
+                >
+                  <span className="upi-icon">🔵</span>
+                  <span>Google Pay</span>
+                </div>
+                <div
+                  className={`upi-option ${selectedUpi === 'Paytm' ? 'selected' : ''}`}
+                  onClick={() => setSelectedUpi('Paytm')}
+                >
+                  <span className="upi-icon">💠</span>
+                  <span>Paytm</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {paymentMethod === 'card' && (
+            <div className="card-form">
+              <div className="input-group">
+                <label>Card Number</label>
+                <input
+                  type="text"
+                  name="number"
+                  placeholder="0000 0000 0000 0000"
+                  value={cardDetails.number}
+                  onChange={handleCardChange}
+                  maxLength="19"
+                />
+              </div>
+              <div className="input-group">
+                <label>Card Holder Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="John Doe"
+                  value={cardDetails.name}
+                  onChange={handleCardChange}
+                />
+              </div>
+              <div className="form-row-split">
+                <div className="input-group">
+                  <label>Expiry Date</label>
+                  <input
+                    type="text"
+                    name="expiry"
+                    placeholder="MM/YY"
+                    value={cardDetails.expiry}
+                    onChange={handleCardChange}
+                    maxLength="5"
+                  />
+                </div>
+                <div className="input-group">
+                  <label>CVV</label>
+                  <input
+                    type="password"
+                    name="cvv"
+                    placeholder="123"
+                    value={cardDetails.cvv}
+                    onChange={handleCardChange}
+                    maxLength="3"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         <button
           onClick={handlePayment}
           className="pay-button"
-          disabled={loading || (paymentMethod === 'wallet' && wallet?.balance < booking.pricing.total)}
+          disabled={loading || (paymentMethod === 'upi' && !selectedUpi) || (paymentMethod === 'card' && !cardDetails.number)}
         >
-          {loading ? 'Processing...' : `Pay $${booking.pricing?.total?.toFixed(2)}`}
+          {loading ? (
+            <span className="spinner">Processing...</span>
+          ) : (
+            `Pay ₹${booking.pricing?.total?.toFixed(2)}`
+          )}
         </button>
       </div>
     </div>

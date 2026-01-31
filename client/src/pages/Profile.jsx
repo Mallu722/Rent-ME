@@ -56,7 +56,7 @@ const Profile = () => {
         {wallet && (
           <div className="wallet-card">
             <h3>Wallet Balance</h3>
-            <div className="wallet-amount">${wallet.balance?.toFixed(2) || '0.00'}</div>
+            <div className="wallet-amount">₹{wallet.balance?.toFixed(2) || '0.00'}</div>
             <button className="topup-button">Top Up</button>
           </div>
         )}

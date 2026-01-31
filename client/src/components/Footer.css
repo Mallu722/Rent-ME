@@ -1,0 +1,125 @@
+.footer {
+    background-color: #111;
+    /* Dark Theme */
+    color: #fff;
+    padding: 5rem 0 2rem;
+    margin-top: auto;
+    font-family: 'Inter', sans-serif;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    /* Spacious layout */
+    gap: 4rem;
+}
+
+.footer-section h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #fca311;
+    /* Accent Color */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.footer-brand .brand-logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: block;
+    background: linear-gradient(to right, #fca311, #ffbf47);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.footer-brand p {
+    color: #a0a0a0;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    max-width: 300px;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-links a {
+    color: #d0d0d0;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.footer-links a:hover {
+    color: #fca311;
+    padding-left: 5px;
+    /* Subtle movement */
+}
+
+.social-icons {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+    background: #fca311;
+    color: #111;
+    transform: translateY(-3px);
+}
+
+.footer-bottom {
+    max-width: 1200px;
+    margin: 4rem auto 0;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Footer Responsive */
+@media (max-width: 1024px) {
+    .footer-container {
+        grid-template-columns: 1fr 1fr;
+        /* 2 columns on tablet */
+        gap: 3rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+        /* Stack on mobile */
+        text-align: center;
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+}

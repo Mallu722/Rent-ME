@@ -34,9 +34,10 @@
   letter-spacing: -0.5px;
 }
 
-.logo-icon {
-  font-size: 32px;
-  filter: drop-shadow(0 4px 6px rgba(255, 51, 102, 0.3));
+.logo-image {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
 }
 
 .navbar-menu {
@@ -117,26 +118,69 @@
 }
 
 @media (max-width: 768px) {
-  .navbar-container {
-    padding: 0 20px;
+  .navbar {
+    height: auto;
+    padding: 10px 0;
   }
 
-  .navbar-menu {
+  .navbar-container {
+    padding: 0 15px;
+    flex-direction: column;
     gap: 15px;
   }
 
+  .navbar-logo {
+    align-self: flex-start;
+  }
+
+  .navbar-menu {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 5px;
+    gap: 10px;
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scroll on iOS */
+    scrollbar-width: none;
+    /* Hide scrollbar Firefox */
+  }
+
+  .navbar-menu::-webkit-scrollbar {
+    display: none;
+    /* Hide scrollbar Chrome/Safari */
+  }
+
   .nav-link {
-    padding: 8px 12px;
-    font-size: 14px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    /* Prevent breaking */
+    background: rgba(0, 0, 0, 0.03);
+    /* Slight bg for touch target */
   }
 
   .user-info {
-    margin-left: 15px;
-    padding-left: 15px;
-    gap: 10px;
+    margin-left: auto;
+    /* Push to right if in flex row, or adjust */
+    padding-left: 10px;
+    border-left: none;
   }
 
-  .user-name {
+  /* Adjust user info to fit in the scrollable row or separate */
+  .navbar-menu .user-info {
     display: none;
+    /* Hide standard user info from scroll menu if needed, or keep inline */
+  }
+
+  /* Create a separate top row for Logo + User/Logout if complex, 
+     but for now let's keep it simple: Logo top, scrollable menu bottom */
+}
+
+@media (max-width: 480px) {
+  .navbar-logo {
+    font-size: 24px;
+  }
+
+  .logo-icon {
+    font-size: 28px;
   }
 }

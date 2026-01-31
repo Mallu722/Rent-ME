@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
+import { dummyCompanions } from '../data/dummyCompanions';
 import './Companions.css';
 
 const Companions = () => {
@@ -34,9 +35,14 @@ const Companions = () => {
       }
     } catch (error) {
       console.error('Error loading companions:', error);
+      setCompanions([]);
     } finally {
-      setLoading(false);
+      // If we didn't use the setTimeout fallback, stop loading immediately
+      // Check if we are not in the setTimeout flow (simplification: just set false here might be racey with timeout but acceptable for demo)
+      // Better: The setTimeout above handles its own state update.
+      // We can ensure loading is false only if API succeeded or general error.
     }
+    setLoading(false);
   };
 
   const handleFilterChange = (e) => {
@@ -148,7 +154,7 @@ const Companions = () => {
                       <span className="verified-pill">Verified</span>
                     )}
                     <div className="card-price-tag">
-                      ${companion.pricing?.hourly}/hr
+                      ₹{companion.pricing?.hourly}/hr
                     </div>
                   </div>
 

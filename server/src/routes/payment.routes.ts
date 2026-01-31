@@ -1,8 +1,8 @@
 import express from 'express';
 import Stripe from 'stripe';
-import Payment from '../models/Payment.model';
-import Booking from '../models/Booking.model';
-import User from '../models/User.model';
+import Payment from '../../../database/models/Payment.model';
+import Booking from '../../../database/models/Booking.model';
+import User from '../../../database/models/User.model';
 import { authenticate, AuthRequest } from '../middleware/auth.middleware';
 
 const router = express.Router();
@@ -14,7 +14,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
 // Create payment intent for booking
 router.post('/create-intent', authenticate, async (req: AuthRequest, res) => {
   try {
-    const { bookingId, amount, currency = 'usd' } = req.body;
+    const { bookingId, amount, currency = 'inr' } = req.body;
 
     const booking = await Booking.findById(bookingId);
     if (!booking) {
@@ -54,7 +54,7 @@ router.post('/confirm', authenticate, async (req: AuthRequest, res) => {
   try {
     const { paymentIntentId, bookingId, method = 'stripe' } = req.body;
 
-    let paymentStatus = 'completed';
+    let paymentStatus: 'pending' | 'completed' | 'failed' = 'completed';
     let transactionId = paymentIntentId;
 
     // If Stripe, verify payment
@@ -126,31 +126,35 @@ router.post('/wallet/topup', authenticate, async (req: AuthRequest, res) => {
 
     if (paymentStatus === 'completed') {
       // Update user wallet
-      const user = await User.findById(req.user?._id);
-      if (user) {
-        user.wallet = user.wallet || { balance: 0, currency: 'USD' };
-        user.wallet.balance += amount;
-        await user.save();
+      let user;
+      if (paymentStatus === 'completed') {
+        // Update user wallet
+        user = await User.findById(req.user?._id);
+        if (user) {
+          user.wallet = user.wallet || { balance: 0, currency: 'INR' };
+          user.wallet.balance += amount;
+          await user.save();
+        }
       }
+
+      // Create payment record
+      const payment = await Payment.create({
+        user: req.user?._id,
+        type: 'wallet_topup',
+        amount,
+        currency: 'INR',
+        method: paymentMethod,
+        status: paymentStatus,
+        stripePaymentIntentId: paymentMethod === 'stripe' ? paymentIntentId : undefined,
+        transactionId,
+      });
+
+      res.json({
+        success: true,
+        message: 'Wallet topped up successfully',
+        data: { payment, wallet: user?.wallet },
+      });
     }
-
-    // Create payment record
-    const payment = await Payment.create({
-      user: req.user?._id,
-      type: 'wallet_topup',
-      amount,
-      currency: 'USD',
-      method: paymentMethod,
-      status: paymentStatus,
-      stripePaymentIntentId: paymentMethod === 'stripe' ? paymentIntentId : undefined,
-      transactionId,
-    });
-
-    res.json({
-      success: true,
-      message: 'Wallet topped up successfully',
-      data: { payment, wallet: user?.wallet },
-    });
   } catch (error: any) {
     res.status(500).json({
       success: false,
@@ -263,7 +267,7 @@ router.get('/wallet', authenticate, async (req: AuthRequest, res) => {
     const user = await User.findById(req.user?._id).select('wallet');
     res.json({
       success: true,
-      data: { wallet: user?.wallet || { balance: 0, currency: 'USD' } },
+      data: { wallet: user?.wallet || { balance: 0, currency: 'INR' } },
     });
   } catch (error: any) {
     res.status(500).json({

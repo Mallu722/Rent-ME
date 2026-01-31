@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './context/AuthContext';
 import { SocketProvider } from './context/SocketContext';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -11,8 +12,6 @@ import Companions from './pages/Companions';
 import CompanionDetail from './pages/CompanionDetail';
 import Booking from './pages/Booking';
 import Bookings from './pages/Bookings';
-import Chat from './pages/Chat';
-import ChatRoom from './pages/ChatRoom';
 import Profile from './pages/Profile';
 import Review from './pages/Review';
 import Payment from './pages/Payment';
@@ -80,22 +79,6 @@ function App() {
                   }
                 />
                 <Route
-                  path="/chat"
-                  element={
-                    <ProtectedRoute>
-                      <Chat />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/chat/:userId"
-                  element={
-                    <ProtectedRoute>
-                      <ChatRoom />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
                   path="/profile"
                   element={
                     <ProtectedRoute>
@@ -138,6 +121,7 @@ function App() {
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </main>
+            <Footer />
           </div>
         </Router>
       </SocketProvider>

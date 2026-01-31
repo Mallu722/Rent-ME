@@ -1,115 +1,190 @@
 .payment-page {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 40px 20px;
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family: 'Inter', sans-serif;
 }
 
 .payment-container {
   background: white;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
 }
 
 .payment-container h1 {
-  font-size: 32px;
-  margin-bottom: 30px;
-  color: #333;
+  font-size: 24px;
+  margin-bottom: 25px;
+  text-align: center;
+  color: #1a1a1a;
 }
 
-.booking-summary {
-  background: #f9f9f9;
+.booking-summary-card {
+  background: #f8f9fa;
   padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.booking-summary h3 {
-  margin-bottom: 15px;
-  color: #333;
+.booking-summary-card h3 {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
 }
 
-.booking-summary p {
-  margin-bottom: 10px;
+.summary-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.summary-row span:first-child {
+  font-size: 12px;
   color: #666;
 }
 
-.total {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
-  padding-top: 15px;
-  border-top: 2px solid #ddd;
+.summary-row .amount {
   font-size: 24px;
-  font-weight: bold;
-  color: #007AFF;
+  font-weight: 700;
+  color: #1a1a1a;
 }
 
-.wallet-info {
-  background: #E3F2FD;
-  padding: 15px;
+.payment-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+  background: #f1f3f5;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: transparent;
   border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-.insufficient {
-  color: #FF3B30;
-  font-weight: 500;
-  margin-top: 10px;
-}
-
-.payment-methods {
-  margin-bottom: 20px;
-}
-
-.payment-methods h3 {
-  margin-bottom: 15px;
-  color: #333;
-}
-
-.method-button {
-  width: 100%;
-  padding: 15px;
-  margin-bottom: 10px;
-  border: 2px solid #ddd;
-  background: white;
-  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
   cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
-  transition: all 0.3s;
+  transition: all 0.2s ease;
 }
 
-.method-button.active {
+.tab-btn.active {
+  background: white;
+  color: #1a1a1a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.payment-content {
+  min-height: 200px;
+  margin-bottom: 30px;
+}
+
+/* UPI Styles */
+.upi-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.upi-option {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  border: 2px solid #eee;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.upi-option:hover {
+  border-color: #ddd;
+  background: #f9f9f9;
+}
+
+.upi-option.selected {
   border-color: #007AFF;
-  background: #E3F2FD;
-  color: #007AFF;
+  background: #ecf5ff;
+}
+
+.upi-icon {
+  font-size: 24px;
+}
+
+/* Card Form Styles */
+.card-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.input-group input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #007AFF;
+}
+
+.form-row-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
 }
 
 .pay-button {
   width: 100%;
-  background: #007AFF;
+  padding: 16px;
+  background: #1a1a1a;
   color: white;
   border: none;
-  padding: 15px;
-  border-radius: 6px;
-  font-size: 18px;
+  border-radius: 12px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.2s;
 }
 
 .pay-button:hover:not(:disabled) {
-  background: #0056b3;
+  background: #000;
+  transform: translateY(-1px);
 }
 
 .pay-button:disabled {
-  opacity: 0.6;
+  background: #ccc;
   cursor: not-allowed;
 }
 
 .loading {
-  text-align: center;
-  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 18px;
   color: #666;
 }

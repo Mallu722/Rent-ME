@@ -1,7 +1,7 @@
 import express from 'express';
-import Review from '../models/Review.model';
-import Booking from '../models/Booking.model';
-import Companion from '../models/Companion.model';
+import Review from '../../../database/models/Review.model';
+import Booking from '../../../database/models/Booking.model';
+import Companion from '../../../database/models/Companion.model';
 import { authenticate, AuthRequest } from '../middleware/auth.middleware';
 import { validateReview, validate } from '../utils/validation.util';
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { dummyCompanions } from '../data/dummyCompanions';
 import { useAuth } from '../context/AuthContext';
 import './Booking.css';
 
@@ -40,6 +41,14 @@ const Booking = () => {
       }
     } catch (error) {
       console.error('Error loading companion:', error);
+      // Fallback to dummy data
+      const dummy = dummyCompanions.find(c => c._id === companionId);
+      if (dummy) {
+        setCompanion(dummy);
+        if (dummy.activityCategories?.length > 0) {
+          setFormData(prev => ({ ...prev, activity: dummy.activityCategories[0] }));
+        }
+      }
     }
   };
 
@@ -66,7 +75,9 @@ const Booking = () => {
     if (!formData.startTime || !formData.endTime) return 0;
     const start = new Date(`2000-01-01T${formData.startTime}`);
     const end = new Date(`2000-01-01T${formData.endTime}`);
-    return (end - start) / (1000 * 60 * 60);
+    let diff = (end - start) / (1000 * 60 * 60);
+    if (diff < 0) diff += 24; // Handle overnight
+    return diff;
   };
 
   const calculateTotal = () => {
@@ -95,18 +106,23 @@ const Booking = () => {
           return;
         }
 
-        const response = await api.post('/bookings', {
-          companion: companionId,
-          activity: formData.activity,
-          date: formData.date,
-          startTime: formData.startTime,
-          endTime: formData.endTime,
-          duration,
-          specialRequests: formData.specialRequests || undefined,
-        });
+        try {
+          const response = await api.post('/bookings', {
+            companion: companionId,
+            activity: formData.activity,
+            date: formData.date,
+            startTime: formData.startTime,
+            endTime: formData.endTime,
+            duration,
+            specialRequests: formData.specialRequests || undefined,
+          });
 
-        if (response.data.success) {
-          navigate(`/payment/${response.data.data.booking._id}`);
+          if (response.data.success) {
+            navigate(`/payment/${response.data.data.booking._id}`);
+          }
+        } catch (apiError) {
+          console.error("Booking API Error:", apiError);
+          setError(apiError.response?.data?.message || 'Failed to create booking');
         }
       }
     } catch (err) {
@@ -216,11 +232,11 @@ const Booking = () => {
               </div>
               <div className="total-row">
                 <span>Rate:</span>
-                <span>${companion.pricing?.hourly}/hour</span>
+                <span>₹{companion.pricing?.hourly}/hour</span>
               </div>
-              <div className="total-row total">
-                <span>Total:</span>
-                <span>${calculateTotal().toFixed(2)}</span>
+              <div className="summary-row total">
+                <span>Total</span>
+                <span>₹{calculateTotal().toFixed(2)}</span>
               </div>
             </div>
           )}

@@ -1,8 +1,8 @@
 import { Server, Socket } from 'socket.io';
 import jwt from 'jsonwebtoken';
-import User from '../models/User.model';
-import Message from '../models/Message.model';
-import Booking from '../models/Booking.model';
+import User from '../../../database/models/User.model';
+import Message from '../../../database/models/Message.model';
+import Booking from '../../../database/models/Booking.model';
 
 interface AuthenticatedSocket extends Socket {
   userId?: string;

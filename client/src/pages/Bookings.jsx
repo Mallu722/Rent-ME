@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { dummyBookings } from '../data/dummyBookings';
 import './Bookings.css';
 
 const Bookings = () => {
@@ -19,14 +20,16 @@ const Bookings = () => {
     try {
       const endpoint = user?.role === 'companion' ? '/bookings/companion-bookings' : '/bookings/my-bookings';
       const response = await api.get(endpoint, { params: { status: filter || undefined } });
-      if (response.data.success) {
+      if (response.data.success && response.data.data.bookings.length > 0) {
         setBookings(response.data.data.bookings);
+      } else {
+        throw new Error("No data from API");
       }
     } catch (error) {
       console.error('Error loading bookings:', error);
-    } finally {
-      setLoading(false);
+      setBookings([]);
     }
+    setLoading(false);
   };
 
   const getStatusColor = (status) => {
@@ -70,7 +73,7 @@ const Bookings = () => {
                   <p><strong>Activity:</strong> {booking.activity}</p>
                   <p><strong>Date:</strong> {new Date(booking.date).toLocaleDateString()}</p>
                   <p><strong>Time:</strong> {booking.startTime} - {booking.endTime}</p>
-                  <p><strong>Total:</strong> ${booking.pricing?.total?.toFixed(2)}</p>
+                  <p><strong>Total:</strong> ₹{booking.pricing?.total?.toFixed(2)}</p>
                 </div>
                 <Link to={`/bookings/${booking._id}`} className="view-button">View Details</Link>
               </div>

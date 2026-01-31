@@ -1,9 +1,9 @@
 import express from 'express';
-import User from '../models/User.model';
-import Companion from '../models/Companion.model';
-import Booking from '../models/Booking.model';
-import Review from '../models/Review.model';
-import Payment from '../models/Payment.model';
+import User from '../../../database/models/User.model';
+import Companion from '../../../database/models/Companion.model';
+import Booking from '../../../database/models/Booking.model';
+import Review from '../../../database/models/Review.model';
+import Payment from '../../../database/models/Payment.model';
 import { authenticate, AuthRequest } from '../middleware/auth.middleware';
 import { authorize } from '../middleware/auth.middleware';
 

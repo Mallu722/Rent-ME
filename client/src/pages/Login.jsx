@@ -34,7 +34,7 @@ const Login = () => {
       <div className="auth-card">
         <div className="auth-header">
           <h1>Welcome Back</h1>
-          <p>Login to your Rent Me account</p>
+          <p>Login to your Saathi account</p>
         </div>
 
         {error && (

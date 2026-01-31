@@ -1,6 +1,6 @@
 import express from 'express';
-import Message from '../models/Message.model';
-import Booking from '../models/Booking.model';
+import Message from '../../../database/models/Message.model';
+import Booking from '../../../database/models/Booking.model';
 import { authenticate, AuthRequest } from '../middleware/auth.middleware';
 
 const router = express.Router();

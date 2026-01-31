@@ -1,5 +1,5 @@
 import express from 'express';
-import User from '../models/User.model';
+import User from '../../../database/models/User.model';
 import { authenticate, AuthRequest } from '../middleware/auth.middleware';
 import { validateProfileUpdate, validate } from '../utils/validation.util';
 import { upload } from '../utils/upload.util';

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
+import { dummyCompanions } from '../data/dummyCompanions';
 import './CompanionDetail.css';
 
 const CompanionDetail = () => {
@@ -23,6 +24,11 @@ const CompanionDetail = () => {
       }
     } catch (error) {
       console.error('Error loading companion:', error);
+      // Fallback to dummy data
+      const dummy = dummyCompanions.find(c => c._id === id);
+      if (dummy) {
+        setCompanion(dummy);
+      }
     } finally {
       setLoading(false);
     }
@@ -63,7 +69,7 @@ const CompanionDetail = () => {
             ⭐ {companion.rating?.average?.toFixed(1) || '0.0'} ({companion.rating?.count || 0} reviews)
           </div>
           <p className="location">📍 {user?.location?.city || 'Location not set'}</p>
-          <div className="price-large">${companion.pricing?.hourly}/hour</div>
+          <div className="price-large">₹{companion.pricing?.hourly}/hour</div>
           <Link to={`/book/${id}`} className="book-button">
             Book Now
           </Link>

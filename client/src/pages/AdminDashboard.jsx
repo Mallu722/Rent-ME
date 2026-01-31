@@ -53,7 +53,7 @@ const AdminDashboard = () => {
         </div>
         <div className="stat-card">
           <h3>Revenue</h3>
-          <div className="stat-value">${stats?.totalRevenue?.toFixed(2) || '0.00'}</div>
+          <div className="stat-value">₹{stats?.totalRevenue?.toFixed(2) || '0.00'}</div>
         </div>
       </div>
     </div>

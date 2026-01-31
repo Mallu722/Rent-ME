@@ -1,6 +1,6 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
-import User from '../models/User.model';
+import User from '../../../database/models/User.model';
 import { generateToken } from '../utils/jwt.util';
 import { authenticate } from '../middleware/auth.middleware';
 import { validateSignup, validateLogin, validate } from '../utils/validation.util';
@@ -63,16 +63,21 @@ router.post('/login', validateLogin, validate, async (req, res) => {
     const { email, password } = req.body;
 
     // Find user
+    console.log(`[LOGIN DEBUG] Attempting login for: ${email}`);
     const user = await User.findOne({ email });
     if (!user) {
+      console.log('[LOGIN DEBUG] User not found');
       return res.status(401).json({
         success: false,
         message: 'Invalid credentials',
       });
     }
+    console.log(`[LOGIN DEBUG] User found: ${user._id}`);
 
     // Check password
     const isPasswordValid = await bcrypt.compare(password, user.password);
+    console.log(`[LOGIN DEBUG] Password valid: ${isPasswordValid}`);
+
     if (!isPasswordValid) {
       return res.status(401).json({
         success: false,

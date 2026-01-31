@@ -3,6 +3,9 @@ import mongoose, { Document, Schema } from 'mongoose';
 export interface ICompanion extends Document {
   userId: mongoose.Types.ObjectId;
   activityCategories: string[];
+  bio: string;
+  skills: string[];
+  languages: string[];
   availability: {
     days: string[];
     timeSlots: {
@@ -46,7 +49,11 @@ const CompanionSchema = new Schema<ICompanion>(
     },
     activityCategories: [{
       type: String,
-      enum: ['walking', 'party', 'travel', 'hangout', 'talk', 'sports', 'dining', 'shopping'],
+      enum: [
+        'walking', 'party', 'travel', 'hangout', 'talk', 'sports', 'dining', 'shopping',
+        'Movie Partner', 'City Guide', 'Gaming', 'Coffee Chat', 'Study Buddy',
+        'Morning Walk', 'Event Plus-One', 'Call', 'Virtual Chat', 'Friend'
+      ],
     }],
     availability: {
       days: [{

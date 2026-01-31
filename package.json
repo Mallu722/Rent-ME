@@ -10,10 +10,17 @@
     "server:build": "cd server && npm run build",
     "client:build": "cd mobile && npm run build"
   },
-  "keywords": ["companion", "booking", "social"],
+  "keywords": [
+    "companion",
+    "booking",
+    "social"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "mongoose": "^9.1.5"
   }
 }
